@@ -284,6 +284,7 @@ def parse_page(page_lines):
 
         name_raw = sm.group('name').strip()
         ank = sm.group('ank')
+        afg = sm.group('afg')
 
         street, postnr, by = find_street_and_post(page_lines, i, lookahead_depth=12)
 
@@ -305,6 +306,7 @@ def parse_page(page_lines):
             "Postnr": postnr,
             "By": by,
             "Ankomst": ank,
+            "Afgang": afg,
             "Rutenummer": rutenummer,
             "Portnummer": portnummer,
             "Starttid": starttid,
@@ -342,7 +344,7 @@ def create_excel(df: pd.DataFrame, koerselsdato: str = None) -> BytesIO:
 
     # Rutenummer først, derefter resten - nu med Kørselsdato
     cols = ["Kørselsdato", "Rutenummer", "Portnummer", "Butiksnavn", "Adresse", "Postnr", "By",
-            "Ankomst", "Starttid", "Sluttid", "Afregningstid (timer)"]
+            "Ankomst", "Afgang", "Starttid", "Sluttid", "Afregningstid (timer)"]
     ws.append(cols)
 
     # Header style
@@ -385,7 +387,7 @@ def create_excel(df: pd.DataFrame, koerselsdato: str = None) -> BytesIO:
     fill_map = {
         "Kørselsdato": ORANGE,
         "Butiksnavn": YELLOW, "Adresse": YELLOW, "Postnr": YELLOW, "By": YELLOW,
-        "Ankomst": BLUE,
+        "Ankomst": BLUE, "Afgang": BLUE,
         "Rutenummer": GREEN,
         "Portnummer": PURPLE,
         "Starttid": GREY, "Sluttid": GREY, "Afregningstid (timer)": GREY
@@ -469,7 +471,7 @@ def main():
         |-------|----------|
         | 🟧 Orange | Kørselsdato |
         | 🟨 Gul | Butik, Adresse, Postnr, By |
-        | 🔵 Blå | Ankomst |
+        | 🔵 Blå | Ankomst, Afgang |
         | 🟢 Grøn | Rutenummer |
         | 🟣 Lilla | Portnummer |
         | ⬜ Grå | Starttid, Sluttid, Afregning |
